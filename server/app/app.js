@@ -13,7 +13,7 @@ const server = http.createServer(app);
 env.config({ path: ".env" });
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  process.env.CLIENT_URL,
   "http://localhost:3000",
   "http://127.0.0.1:3000",
 ];
@@ -50,7 +50,7 @@ app.use(
 // =======================================================
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL, // Use the same production URL here
+    origin: process.env.CLIENT_URL, // Use the same production URL here
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   },
