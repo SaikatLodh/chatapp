@@ -12,11 +12,25 @@ const server = http.createServer(app);
 
 env.config({ path: ".env" });
 
-const FRONTEND_URL = process.env.CLIENT_URL || "http://localhost:3000";
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+];
 
+// Configure the CORS middleware
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, postman or curl)
+      if (!origin) return callback(null, true);
+      // Check if the origin is in our list of allowed origins
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -29,10 +43,15 @@ app.use(
   })
 );
 
+// Your custom header setting middleware is completely removed as it's redundant and a source of conflict.
+
+// =======================================================
+// === SOCKET.IO CORS CONFIGURATION ===
+// =======================================================
 const io = new Server(server, {
   cors: {
-    origin: FRONTEND_URL,
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    origin: process.env.FRONTEND_URL, // Use the same production URL here
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   },
 });
