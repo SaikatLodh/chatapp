@@ -12,23 +12,13 @@ const server = http.createServer(app);
 
 env.config({ path: ".env" });
 
-env.config({ path: ".env" });
-
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_URL || "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    credentials: true,
-  },
-});
-setIO(io);
 app.use(cors());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS,HEAD,PATCH"
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS,HEAD,PATCH"
   );
   res.header(
     "Access-Control-Allow-Headers",
@@ -36,6 +26,15 @@ app.use(function (req, res, next) {
   );
   next();
 });
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
+  },
+});
+setIO(io);
 
 app.use(cookieParser());
 app.use(express.json());
