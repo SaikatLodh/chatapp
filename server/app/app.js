@@ -47,7 +47,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-
+app.set("trust proxy", 1); 
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRouter");
 const chatRoute = require("./routes/chatRoute");
