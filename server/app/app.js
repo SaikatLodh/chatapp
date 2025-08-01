@@ -12,46 +12,31 @@ const server = http.createServer(app);
 
 env.config({ path: ".env" });
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-];
-
-// Configure the CORS middleware
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, postman or curl)
-      if (!origin) return callback(null, true);
-      // Check if the origin is in our list of allowed origins
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
+    origin: process.env.CLIENT_URL || "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: [
-      "Origin",
-      "X-Requested-With",
-      "Content-Type",
-      "Accept",
-      "Authorization",
-    ],
   })
 );
 
-// Your custom header setting middleware is completely removed as it's redundant and a source of conflict.
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL || "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS,HEAD,PATCH"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  next();
+});
 
-// =======================================================
-// === SOCKET.IO CORS CONFIGURATION ===
-// =======================================================
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL, // Use the same production URL here
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    origin: process.env.CLIENT_URL || "*",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
   },
 });
@@ -61,7 +46,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-app.set("trust proxy", 1);
 
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRouter");
@@ -111,7 +95,6 @@ io.on("connection", (socket) => {
       }
     });
   });
-
   socket.on("disconnect", () => {
     if (userSocketIDs.has(user._id.toString()))
       userSocketIDs.delete(user._id.toString());
