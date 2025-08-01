@@ -1,0 +1,45 @@
+export const endpoints = {
+  auth: {
+    sendotp: "/auth/sendOtp",
+    verifyotp: "/auth/verifyOtp",
+    register: "/auth/register",
+    login: "/auth/login",
+    logout: "/auth/logout",
+    forgotSendEmail: "/auth/forgotSendEmail",
+    forgotResetPassword: "/auth/forgotResetPassword",
+    googlesignup: "/auth/googlesignup",
+    googlesignin: "/auth/googlesignin",
+    refreshtoken: "/auth/refreshtoken",
+  },
+  user: {
+    updateuser: "/user/updateuser",
+    changepassword: "/user/changepassword",
+    searchuser: "/user/searchuser",
+    sendfriendrequest: "/user/sendfriendrequest",
+    acceptfriendrequest: "/user/acceptfriendrequest",
+    getmyfrieendrequest: "/user/getmyfrieendrequest",
+    getmyfriends: "/user/getmyfriends",
+    getuser: "/user/getuser",
+    removefriend: "/user/removefriend",
+  },
+  chat: {
+    creategroupchat: "/chat/creategroupchat",
+    getmychatlist: "/chat/getmychatlist",
+    getmygroups: "/chat/getmygroups",
+    addmembers: "/chat/addmembers",
+    removemembers: "/chat/removemembers",
+    renamegroup: "/chat/renamegroup",
+    leavegroup: "/chat/leavegroup",
+    sendmessage: "/chat/sendmessage",
+    getmessages: "/chat/getmessages",
+    deleteChat: "/chat/deleteChat",
+  },
+  admin: {
+    getdashboardstats: "/admin/getdashboardstats",
+    getallusers: "/admin/getallusers",
+    getallchats: "/admin/getallchats",
+    getallmessages: "/admin/getallmessages",
+  },
+};
+
+export default endpoints;
