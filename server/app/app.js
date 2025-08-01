@@ -31,7 +31,7 @@ app.use(
 );
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL || "*");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS,HEAD,PATCH"
@@ -47,7 +47,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-app.set("trust proxy", 1); 
+app.set("trust proxy", 1);
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRouter");
 const chatRoute = require("./routes/chatRoute");
