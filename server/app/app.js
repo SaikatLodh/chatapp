@@ -12,25 +12,27 @@ const server = http.createServer(app);
 
 env.config({ path: ".env" });
 
-app.use(cors());
+const FRONTEND_URL = process.env.CLIENT_URL || "http://localhost:3000";
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE, OPTIONS,HEAD,PATCH"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "Content-Type",
+      "Accept",
+      "Authorization",
+    ],
+  })
+);
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    origin: FRONTEND_URL,
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
   },
 });
@@ -41,6 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("trust proxy", 1);
+
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRouter");
 const chatRoute = require("./routes/chatRoute");
@@ -89,6 +92,7 @@ io.on("connection", (socket) => {
       }
     });
   });
+
   socket.on("disconnect", () => {
     if (userSocketIDs.has(user._id.toString()))
       userSocketIDs.delete(user._id.toString());
