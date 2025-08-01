@@ -155,6 +155,7 @@ class authController {
         const { accessToken, refreshToken } =
           await generateAccessAndRefereshToken(checkUser._id);
 
+        const isProduction = process.env.NODE_ENV === "production";
         const accessOptions = {
           httpOnly: true,
           secure: isProduction,
