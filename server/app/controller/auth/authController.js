@@ -158,15 +158,17 @@ class authController {
         const accessOptions = {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax",
+          sameSite: "none",
           expires: new Date(Date.now() + 15 * 60 * 1000),
+          path: "/",
         };
 
         const refreshOptions = {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax",
+          sameSite: "none",
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          path: "/",
         };
 
         return res
