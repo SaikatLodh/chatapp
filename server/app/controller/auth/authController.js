@@ -157,18 +157,20 @@ class authController {
 
         const accessOptions = {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "none",
-          partitioned: true,
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
+          domain: isProduction ? "chatapp-a5f7.vercel.app" : "localhost:3000",
+          partitioned: isProduction,
           expires: new Date(Date.now() + 15 * 60 * 1000),
           path: "/",
         };
 
         const refreshOptions = {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "none",
-          partitioned: true,
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
+          domain: isProduction ? "chatapp-a5f7.vercel.app" : "localhost:3000",
+          partitioned: isProduction,
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           path: "/",
         };
