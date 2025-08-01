@@ -455,13 +455,15 @@ class authController {
 
       const { accessToken } = await generateAccessAndRefereshToken(user._id);
 
+      const isProduction = process.env.NODE_ENV === "production";
       const accessOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        partitioned: isProduction,
         expires: new Date(Date.now() + 15 * 60 * 1000),
+        path: "/",
       };
-
       return res
         .status(200)
         .cookie("accessToken", accessToken, accessOptions)
