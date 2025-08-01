@@ -181,7 +181,7 @@ class authController {
           .json(
             new ApiResponse(
               200,
-              { token: accessToken },
+              { accessToken: accessToken, refreshToken: refreshToken },
               "User login successfully"
             )
           );
@@ -328,18 +328,23 @@ class authController {
       const { accessToken, refreshToken } =
         await generateAccessAndRefereshToken(createuser._id);
 
+      const isProduction = process.env.NODE_ENV === "production";
       const accessOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        partitioned: isProduction,
         expires: new Date(Date.now() + 15 * 60 * 1000),
+        path: "/",
       };
 
       const refreshOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        partitioned: isProduction,
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        path: "/",
       };
 
       return res
@@ -349,7 +354,7 @@ class authController {
         .json(
           new ApiResponse(
             200,
-            { token: accessToken },
+            { accessToken: accessToken, refreshToken: refreshToken },
             "User signup successfully"
           )
         );
@@ -392,18 +397,23 @@ class authController {
         const { accessToken, refreshToken } =
           await generateAccessAndRefereshToken(checkEmail._id);
 
+        const isProduction = process.env.NODE_ENV === "production";
         const accessOptions = {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax",
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
+          partitioned: isProduction,
           expires: new Date(Date.now() + 15 * 60 * 1000),
+          path: "/",
         };
 
         const refreshOptions = {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax",
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
+          partitioned: isProduction,
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          path: "/",
         };
 
         return res
@@ -413,7 +423,7 @@ class authController {
           .json(
             new ApiResponse(
               200,
-              { token: accessToken },
+              { accessToken: accessToken, refreshToken: refreshToken },
               "User login successfully"
             )
           );
@@ -458,7 +468,7 @@ class authController {
         .json(
           new ApiResponse(
             200,
-            { token: accessToken },
+            { accessToken: accessToken },
             "Reset token successfully"
           )
         );

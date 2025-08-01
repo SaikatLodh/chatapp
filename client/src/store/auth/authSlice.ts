@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
 import endpoints from "@/api/endpoints/endpoints";
-
+import Cookies from "js-cookie";
 export const sendOtp = createAsyncThunk(
   "auth/sendOtp",
   async (email: string, { rejectWithValue }) => {
@@ -109,6 +109,12 @@ export const login = createAsyncThunk(
       );
       if (response.data?.message) {
         toast.success(`${response.data?.message}`);
+        Cookies.set("accessToken", response.data.data.accessToken, {
+          expires: 15 / (60 * 24),
+        });
+        Cookies.set("refreshToken", response.data.data.refreshToken, {
+          expires: 7,
+        });
         return response.data;
       }
       return rejectWithValue("No message in response");
@@ -224,6 +230,12 @@ export const googlesignup = createAsyncThunk(
       );
       if (response.data?.message) {
         toast.success(`${response.data?.message}`);
+        Cookies.set("accessToken", response.data.data.accessToken, {
+          expires: 15 / (60 * 24),
+        });
+        Cookies.set("refreshToken", response.data.data.refreshToken, {
+          expires: 7,
+        });
         return response.data;
       }
       return rejectWithValue("No message in response");
@@ -248,6 +260,12 @@ export const googlesignin = createAsyncThunk(
       );
       if (response.data?.message) {
         toast.success(`${response.data?.message}`);
+        Cookies.set("accessToken", response.data.data.accessToken, {
+          expires: 15 / (60 * 24),
+        });
+        Cookies.set("refreshToken", response.data.data.refreshToken, {
+          expires: 7,
+        });
         return response.data;
       }
       return rejectWithValue("No message in response");
@@ -298,6 +316,9 @@ export const refreshToken = createAsyncThunk(
         { withCredentials: true }
       );
       if (response?.data?.message) {
+        Cookies.set("accessToken", response.data.data.accessToken, {
+          expires: 15 / (60 * 24),
+        });
         return response?.data;
       }
       return rejectWithValue("No message in response");
@@ -388,6 +409,8 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
       })
       .addCase(logout.rejected, (state) => {
         state.loading = false;
