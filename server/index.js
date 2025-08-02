@@ -2,7 +2,7 @@ const cluster = require("node:cluster");
 const os = require("os");
 const connectDb = require("./app/config/db");
 const { server } = require("./app/app");
-// const numCPUs = os.cpus().length;
+const numCPUs = os.cpus().length;
 
 if (cluster.isPrimary) {
   for (let i = 0; i < numCPUs; i++) {
