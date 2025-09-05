@@ -35,10 +35,11 @@ const Widget = ({
   <Paper
     elevation={3}
     sx={{
-      padding: "2rem",
-      margin: "2rem 0",
+      padding: { xs: "1rem", sm: "2rem" },
+      margin: { xs: "1rem 0", sm: "2rem 0" },
       borderRadius: "1.5rem",
-      width: "20rem",
+      width: { xs: "100%", sm: "20rem" },
+      maxWidth: "20rem",
     }}
   >
     <Stack alignItems={"center"} spacing={"1rem"}>
@@ -47,18 +48,19 @@ const Widget = ({
           color: "rgba(0,0,0,0.7)",
           borderRadius: "50%",
           border: `5px solid ${matBlack}`,
-          width: "5rem",
-          height: "5rem",
+          width: { xs: "4rem", sm: "5rem" },
+          height: { xs: "4rem", sm: "5rem" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          fontSize: { xs: "1.5rem", sm: "2rem" },
         }}
       >
         {value}
       </Typography>
       <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
         {Icon}
-        <Typography>{title}</Typography>
+        <Typography variant="body1">{title}</Typography>
       </Stack>
     </Stack>
   </Paper>
@@ -71,28 +73,57 @@ const Dashboard = () => {
   const Appbar = (
     <Paper
       elevation={3}
-      sx={{ padding: "2rem", margin: "2rem 0", borderRadius: "1rem" }}
+      sx={{
+        padding: { xs: "1rem", sm: "2rem" },
+        margin: { xs: "1rem 0", sm: "2rem 0" },
+        borderRadius: "1rem",
+      }}
     >
-      <Stack direction={"row"} alignItems={"center"} spacing={"1rem"}>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        alignItems={{ xs: "center", sm: "center" }}
+        spacing={{ xs: "1rem", sm: "1rem" }}
+      >
         <Box>
           <Avatar
             src={user?.avatar?.url}
             alt={user?.name}
-            sx={{ width: 100, height: 100 }}
+            sx={{ width: { xs: 60, sm: 100 }, height: { xs: 60, sm: 100 } }}
           />
         </Box>
-        <Box flexGrow={1} />
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <Box flexGrow={{ xs: 0, sm: 1 }} />
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           <Typography variant="h6">{user?.name}</Typography>
           <Person2Icon />
         </Box>
-        <Box flexGrow={1} />
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <Box flexGrow={{ xs: 0, sm: 1 }} />
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           <Typography variant="h6">{user?.email}</Typography>
           <AlternateEmailIcon />
         </Box>
-        <Box flexGrow={1} />
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <Box flexGrow={{ xs: 0, sm: 1 }} />
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           {moment(user?.createdAt).format("MMM Do YYYY")}
           <CalendarMonthIcon />
         </Box>
@@ -150,13 +181,20 @@ const Dashboard = () => {
           <Paper
             elevation={3}
             sx={{
-              padding: "2rem 3.5rem",
+              padding: { xs: "1rem", sm: "2rem" },
               borderRadius: "1rem",
               width: "100%",
               maxWidth: "45rem",
             }}
           >
-            <Typography margin={"2rem 0"} variant="h4">
+            <Typography
+              margin={"2rem 0"}
+              sx={{
+                textAlign: "center",
+                fontSize: { xs: "1.5rem", sm: "2rem" },
+              }}
+              variant="h4"
+            >
               Last Messages
             </Typography>
 

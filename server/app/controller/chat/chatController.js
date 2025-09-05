@@ -419,6 +419,18 @@ class chatController {
       if (!chat)
         return res.status(404).json(new ApiError("Chat not found", 404));
 
+      const getFriend = chat.members.filter(
+        (member) => member.toString() !== userId.toString()
+      )[0];
+
+      const isFriend = req.user.friends.includes(getFriend.toString());
+
+      if (!isFriend && chat.groupChat === false) {
+        return res
+          .status(400)
+          .json(new ApiError("You are not friends with this user", 400));
+      }
+
       if (files?.length > 0) {
         const upLoadFiles = await uploadFile.uploadFiles(files);
 

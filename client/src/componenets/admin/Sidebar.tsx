@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Drawer, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
 import {
@@ -48,7 +48,13 @@ const adminTabs: AdminTab[] = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({
+  isMobile,
+  handleMobile,
+}: {
+  isMobile: boolean;
+  handleMobile: () => void;
+}) => {
   const [logoutOpen, setLogoutOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -66,54 +72,56 @@ const Sidebar = () => {
   };
   return (
     <>
-      <Stack direction={"column"} spacing={"3rem"} mt={"1.3rem"}>
-        <Stack>
-          {adminTabs.map((tab) => (
-            <Stack
-              key={tab.path}
-              sx={
-                pathname === tab.path
-                  ? {
-                      backgroundColor: "#EA7070",
-                      color: "white",
-                      ":hover": {
-                        color: "black",
-                        backgroundColor: "white",
-                        transition: "all 0.3s ease-in-out",
-                      },
-                      padding: "1.3rem 1rem",
-                    }
-                  : {
-                      padding: "1.3rem 1rem",
-                    }
-              }
-            >
-              <Link href={tab.path}>
-                <Stack direction={"row"} alignItems={"center"} gap={"1rem"}>
-                  {tab.icon}
-                  <Typography>{tab.name}</Typography>
-                </Stack>
-              </Link>
-            </Stack>
-          ))}
+      <Drawer open={isMobile} onClose={handleMobile} anchor="left">
+        <Stack direction={"column"} spacing={"3rem"} mt={"1.3rem"}>
+          <Stack>
+            {adminTabs.map((tab) => (
+              <Stack
+                key={tab.path}
+                sx={
+                  pathname === tab.path
+                    ? {
+                        backgroundColor: "#EA7070",
+                        color: "white",
+                        ":hover": {
+                          color: "black",
+                          backgroundColor: "white",
+                          transition: "all 0.3s ease-in-out",
+                        },
+                        padding: "1.3rem 1rem",
+                      }
+                    : {
+                        padding: "1.3rem 1rem",
+                      }
+                }
+              >
+                <Link href={tab.path}>
+                  <Stack direction={"row"} alignItems={"center"} gap={"1rem"}>
+                    {tab.icon}
+                    <Typography>{tab.name}</Typography>
+                  </Stack>
+                </Link>
+              </Stack>
+            ))}
 
-          <Stack
-            direction={"row"}
-            alignItems={"center"}
-            gap={"1rem"}
-            sx={{ cursor: "pointer", padding: "1.3rem 1rem" }}
-            onClick={() => setLogoutOpen(true)}
-          >
-            <ExitToAppIcon />
-            <Typography>Logout</Typography>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              gap={"1rem"}
+              sx={{ cursor: "pointer", padding: "1.3rem 1rem" }}
+              onClick={() => setLogoutOpen(true)}
+            >
+              <ExitToAppIcon />
+              <Typography>Logout</Typography>
+            </Stack>
+            <LogoutPopup
+              logoutOpen={logoutOpen}
+              setLogoutOpen={setLogoutOpen}
+              logoutHandler={logoutHandler}
+            />
           </Stack>
-          <LogoutPopup
-            logoutOpen={logoutOpen}
-            setLogoutOpen={setLogoutOpen}
-            logoutHandler={logoutHandler}
-          />
         </Stack>
-      </Stack>
+      </Drawer>
     </>
   );
 };

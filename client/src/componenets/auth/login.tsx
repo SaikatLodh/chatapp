@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Visibility from "@mui/icons-material/Visibility";
@@ -31,7 +30,6 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
-  const router = useRouter();
 
   const savedEmail =
     typeof window !== "undefined"
@@ -72,7 +70,7 @@ const Login = () => {
             localStorage.removeItem("savedPassword");
           }
 
-          router.push("/");
+          window.location.href = "/";
           dispatch(getUser());
         }
       })

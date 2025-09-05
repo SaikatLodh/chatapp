@@ -23,13 +23,15 @@ import Group from "./group/Group";
 import { AppDispatch, RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reSetDetails, resetLoading } from "@/store/auth/authSlice";
-import { useRouter } from "next/navigation";
 import { useMyFriendsRequest } from "@/hooks/react-query/react-hooks/user/userHook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
 import { setChat, setGroup } from "@/store/chat/chatSlice";
 import { resetOnlineOfflineUser } from "@/store/websocket/onlineofflineUserSlice";
 import LogoutPopup from "./LogoutPopup";
+import MobileMenu from "./MobileMenu";
+import { usePathname } from "next/navigation";
+import Sidebar from "./admin/Sidebar";
 
 const Header = () => {
   const { isAuthenticated, user } = useSelector(
@@ -37,11 +39,14 @@ const Header = () => {
   );
 
   const [open, setOpen] = useState(false);
+  const [baeOpen, setBaeOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const handleMobile = () => setIsMobile(!isMobile);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+  const location = usePathname();
   const { data } = useMyFriendsRequest();
 
   const logoutHandler = () => {
@@ -53,7 +58,7 @@ const Header = () => {
           dispatch(setGroup(null));
           dispatch(resetOnlineOfflineUser());
           setLogoutOpen(false);
-          router.push("/login");
+          window.location.href = "/login";
         }
       })
       .finally(() => {
@@ -97,29 +102,51 @@ const Header = () => {
               }}
             >
               <Toolbar>
-                <Link
-                  href={`${user?.role === "admin" ? "/admin" : "/"}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      display: { xs: "none", sm: "block" },
-                    }}
+                <Box>
+                  <Link
+                    href={`${user?.role === "admin" ? "/admin" : "/"}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    Chat
-                  </Typography>
-                </Link>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        display: {
+                          xs: `${
+                            location.startsWith("/admin") ? "block" : "none"
+                          }`,
+                          sm: "block",
+                        },
+                      }}
+                    >
+                      Chat
+                    </Typography>
+                  </Link>
+                </Box>
 
                 <Box
                   sx={{
-                    display: { xs: "block", sm: "none" },
+                    display: {
+                      xs: "flex",
+                      sm: "none",
+                      width: location.startsWith("/admin") ? "100%" : "auto",
+                      justifyContent: "flex-end",
+                    },
                   }}
                 >
-                  <IconButton color="inherit">
-                    <MenuIcon />
-                  </IconButton>
+                  {location.startsWith("/admin") ? (
+                    <IconButton color="inherit" onClick={handleMobile}>
+                      <MenuIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      color="inherit"
+                      onClick={() => setBaeOpen(true)}
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                  )}
                 </Box>
+
                 <Box
                   sx={{
                     flexGrow: 1,
@@ -176,7 +203,11 @@ const Header = () => {
                 closeNotificationHandler={closeNotificationHandler}
               />
               <Group isGroup={isGroup} closeGroupHandler={closeGroupHandler} />
+              <MobileMenu open={baeOpen} setOpen={setBaeOpen} />
             </>
+          )}
+          {user && user.role === "admin" && (
+            <Sidebar isMobile={isMobile} handleMobile={handleMobile} />
           )}
         </>
       ) : (

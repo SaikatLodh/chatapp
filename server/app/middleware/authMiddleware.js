@@ -30,7 +30,6 @@ const verifyJwt = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json(new ApiError(error.message, 500));
   }
 };

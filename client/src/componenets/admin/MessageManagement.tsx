@@ -34,6 +34,7 @@ const columns = [
     field: "id",
     headerName: "ID",
     width: 200,
+    responsiveSx: { display: { xs: "none", md: "table-cell" } },
   },
   {
     field: "transformedSender",
@@ -60,6 +61,7 @@ const columns = [
     field: "createdDate",
     headerName: "Created At",
     width: 220,
+    responsiveSx: { display: { xs: "none", md: "table-cell" } },
   },
   {
     field: "message",
@@ -182,7 +184,7 @@ const ChatManagement = () => {
     <Paper
       elevation={3}
       sx={{
-        padding: "1rem 4rem",
+        padding: { xs: "0.5rem 1rem", md: "1rem 4rem" },
         borderRadius: "1rem",
         margin: "auto",
         width: "100%",
@@ -209,12 +211,16 @@ const ChatManagement = () => {
           <Typography
             textAlign="center"
             variant="h4"
-            sx={{ margin: "2rem", textTransform: "uppercase" }}
+            sx={{
+              margin: { xs: "1rem", md: "2rem" },
+              fontSize: { xs: "1.5rem", md: "2.25rem" },
+              textTransform: "uppercase",
+            }}
           >
             Message Management
           </Typography>
 
-          <TableContainer sx={{ maxHeight: "72vh" }}>
+          <TableContainer sx={{ maxHeight: "72vh", overflowX: "auto" }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -226,6 +232,7 @@ const ChatManagement = () => {
                         backgroundColor: "black",
                         color: "white",
                         fontWeight: "bold",
+                        ...column.responsiveSx,
                       }}
                       align={column.field === "message" ? "left" : "center"}
                     >
@@ -251,7 +258,11 @@ const ChatManagement = () => {
                                 | undefined);
 
                         return (
-                          <TableCell key={index} align="center">
+                          <TableCell
+                            key={index}
+                            align="center"
+                            sx={{ ...column.responsiveSx }}
+                          >
                             {cellContent}
                           </TableCell>
                         );

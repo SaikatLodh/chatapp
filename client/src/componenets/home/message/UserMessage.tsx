@@ -58,9 +58,7 @@ const UserMessage = ({ data }: { data: Message }) => {
                     >
                       <Avatar
                         alt={data.sender.name}
-                        src={
-                          data.sender.avatar?.url || data.sender.gooleavatar
-                        }
+                        src={data.sender.avatar?.url || data.sender.gooleavatar}
                       />
                       <Typography sx={{ fontSize: "14px" }}>
                         {data.sender.name}

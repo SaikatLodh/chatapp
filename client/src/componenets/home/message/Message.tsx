@@ -25,6 +25,7 @@ import Typing from "./TypingUser";
 import MicIcon from "@mui/icons-material/Mic";
 import AudioSpeach from "./AudioSpeach";
 import { useSpeechRecognition } from "react-speech-recognition";
+import NoMessage from "./NoMessage";
 type Inputs = {
   content: string;
 };
@@ -40,6 +41,15 @@ const Message = () => {
   const [open, setOpen] = React.useState(false);
   const { mutate } = useSendMessage();
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const filterFriend =
+    chatData?.groupChat === false
+      ? chatData?.members.filter((member) => member !== user?._id)[0]
+      : "";
+  const isFriend =
+    chatData?.groupChat === false
+      ? user?.friends.includes(filterFriend as string)
+      : true;
+
   const handleClick = () => {
     setOpen(true);
   };
@@ -84,6 +94,7 @@ const Message = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            px: 2,
           }}
         >
           <Box>
@@ -100,14 +111,16 @@ const Message = () => {
                     width: "3rem",
                     height: "3rem",
                     position: "absolute",
-                    left: `${1.7 * index}rem`,
+                    left: "1rem",
                     top: "50%",
                     transform: "translateY(-50%)",
                   }}
                 />
               ))}
 
-            <Typography variant="h6">{chatData?.name}</Typography>
+            <Typography variant="h6" textAlign={"center"}>
+              {chatData?.name}
+            </Typography>
             <Typing
               content={content}
               isTyping={isTyping}
@@ -117,7 +130,19 @@ const Message = () => {
               filterOther={filterOther}
               typingUser={typingUser}
             />
+            {isFriend ? (
+              ""
+            ) : (
+              <Typography
+                variant="h6"
+                textAlign={"center"}
+                sx={{ fontSize: "0.8rem" }}
+              >
+                You are not friends
+              </Typography>
+            )}
           </Box>
+
           {!chatData?.groupChat && (
             <Box>
               <Typography>
@@ -131,6 +156,7 @@ const Message = () => {
             </Box>
           )}
         </Box>
+
         <Stack
           boxSizing={"border-box"}
           padding={"1rem"}
@@ -140,13 +166,17 @@ const Message = () => {
           sx={{
             overflowX: "hidden",
             overflowY: "auto",
-            px: "4rem",
           }}
         >
-          {data && data.length > 0
-            ? data.map((item) => <UserMessage key={item._id} data={item} />)
-            : null}
+          {data && data.length > 0 ? (
+            data.map((item) => <UserMessage key={item._id} data={item} />)
+          ) : (
+            <>
+              <NoMessage />
+            </>
+          )}
         </Stack>
+
         <form
           style={{
             height: "10%",
@@ -164,16 +194,19 @@ const Message = () => {
             <IconButton
               sx={{
                 position: "absolute",
-                left: "-1.8rem",
+                left: { sm: "-1.8rem", xs: "-1rem" },
                 rotate: "-42deg",
                 zIndex: 20,
               }}
+              disabled={isFriend ? false : true}
             >
               <AttachFileIcon onClick={handleClick} />
             </IconButton>
 
             <Input
-              placeholder="Type Message Here..."
+              placeholder={`${
+                isFriend ? "Type a message" : "You are not friends"
+              }`}
               sx={{
                 width: "100%",
                 height: "100%",
@@ -184,6 +217,7 @@ const Message = () => {
                 backgroundColor: "rgba(247,247,247,1)",
               }}
               {...register("content", { required: true })}
+              disabled={isFriend ? false : true}
             />
 
             <IconButton
@@ -213,12 +247,15 @@ const Message = () => {
                 },
               }}
               onClick={() => setIsSpeach(true)}
-              disabled={!browserSupportsSpeechRecognition}
+              disabled={
+                !browserSupportsSpeechRecognition || isFriend ? false : true
+              }
             >
               <MicIcon />
             </IconButton>
           </Stack>
         </form>
+
         <FileMenu
           open={open}
           handleClose={handleClose}

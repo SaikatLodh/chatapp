@@ -3,6 +3,7 @@ import {
   USER_CHAT_QUERY_KEY,
   USER_FRIENDS_QUERY_KEY,
   USER_LIST_QUERY_KEY,
+  USER_MESSAGE_QUERY_KEY,
   USER_NOTIFICATION_QUERY_KEY,
 } from "../../react-keys/queryKeys";
 import searchUser from "../../../../api/functions/user/searchUser";
@@ -151,6 +152,12 @@ const useRemovefriend = () => {
 
         queryClient.invalidateQueries({
           queryKey: [USER_FRIENDS_QUERY_KEY],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [USER_CHAT_QUERY_KEY],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [USER_MESSAGE_QUERY_KEY],
         });
       }
     },

@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import endpoints from "@/api/endpoints/endpoints";
 import Cookies from "js-cookie";
+
 export const sendOtp = createAsyncThunk(
   "auth/sendOtp",
   async (email: string, { rejectWithValue }) => {

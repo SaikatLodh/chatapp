@@ -35,6 +35,7 @@ const columns = [
     field: "id",
     headerName: "ID",
     width: 200,
+    responsiveSx: { display: { xs: 'none', md: 'table-cell' } },
   },
   {
     field: "avatar",
@@ -65,6 +66,7 @@ const columns = [
     field: "members",
     headerName: "Members",
     width: 300,
+    responsiveSx: { display: { xs: 'none', md: 'table-cell' } },
     renderCell: (params: { row: TransformedChat }) => (
       <Stack direction="row" spacing={1}>
         {params.row.members.map((url, index) => (
@@ -77,11 +79,13 @@ const columns = [
     field: "totalMessages",
     headerName: "Total Messages",
     width: 150,
+    responsiveSx: { display: { xs: 'none', md: 'table-cell' } },
   },
   {
     field: "creator",
     headerName: "Created By",
     width: 250,
+    responsiveSx: { display: { xs: 'none', md: 'table-cell' } },
     renderCell: (params: { row: TransformedChat }) => (
       <Stack direction="row" alignItems="center" spacing={1}>
         <Avatar alt={params.row.creator.name} src={params.row.creator.avatar} />
@@ -128,7 +132,7 @@ const ChatManagement = () => {
     <Paper
       elevation={3}
       sx={{
-        padding: "1rem 4rem",
+        padding: { xs: "0.5rem 1rem", md: "1rem 4rem" },
         borderRadius: "1rem",
         margin: "auto",
         width: "100%",
@@ -156,14 +160,15 @@ const ChatManagement = () => {
             textAlign="center"
             variant="h4"
             sx={{
-              margin: "2rem",
+              margin: { xs: "1rem", md: "2rem" },
+              fontSize: { xs: "1.5rem", md: "2.25rem" },
               textTransform: "uppercase",
             }}
           >
             Chat Management
           </Typography>
 
-          <TableContainer sx={{ maxHeight: "72vh" }}>
+          <TableContainer sx={{ maxHeight: "72vh", overflowX: 'auto' }}>
             <Table stickyHeader aria-label="chat table">
               <TableHead>
                 <TableRow>
@@ -175,6 +180,7 @@ const ChatManagement = () => {
                         backgroundColor: "black",
                         color: "white",
                         fontWeight: "bold",
+                        ...column.responsiveSx,
                       }}
                       align={
                         column.field === "totalMembers"
@@ -229,6 +235,7 @@ const ChatManagement = () => {
                                   ? "center"
                                   : "left"
                               }`,
+                              ...column.responsiveSx,
                             }}
                           >
                             {cellContent}

@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-
 import Box from "@mui/material/Box";
 import Account from "./Account";
 import UserPassword from "./UserPassword";
@@ -54,8 +53,8 @@ const Wrapper = () => {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          height: "93vh",
           backgroundColor: "#F7F7F7",
+          my: { sm: "0rem", xs: "1rem" },
         }}
       >
         <Box

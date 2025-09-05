@@ -14,7 +14,7 @@ const Wrapper = () => {
         sx={{
           height: "100%",
           display: "flex",
-          width: group && group?.length > 0 ? "60%" : "80%",
+          width: { sm: group && group?.length > 0 ? "60%" : "80%", xs: "100%" },
         }}
       >
         {groupData ? (

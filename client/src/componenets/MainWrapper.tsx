@@ -37,8 +37,7 @@ import {
 } from "@/store/websocket/typingSlice";
 import { useRouter } from "next/navigation";
 import { initRefreshToken } from "@/api/functions/auth/refreshToken";
-import Image from "next/image";
-import * as motion from "motion/react-client";
+
 const MainWrapper = ({ children }: { children: React.ReactNode }) => {
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
@@ -55,7 +54,6 @@ const MainWrapper = ({ children }: { children: React.ReactNode }) => {
     dispatch(refreshToken()).then((res) => {
       if (res.payload.status === 200) {
         dispatch(getUser());
-        router.push("/admin");
       }
     });
   }, [dispatch, router]);
@@ -121,6 +119,7 @@ const MainWrapper = ({ children }: { children: React.ReactNode }) => {
     socket.on("disconnect", () => {
       dispatch(resetSocket());
       dispatch(resetTyping());
+      socket.disconnect();
     });
 
     socket.on("connect_error", (error) => {
@@ -132,42 +131,18 @@ const MainWrapper = ({ children }: { children: React.ReactNode }) => {
         dispatch(resetOnlineOfflineUser());
         dispatch(resetAllMessageAlert());
         dispatch(resetTyping());
+        socket.disconnect();
       }
     });
 
     return () => {
       dispatch(setChat(null));
       dispatch(setGroup(null));
+      socket.disconnect();
     };
   }, [dispatch, isAuthenticated, user, queryClient]);
 
-  return (
-    <>
-      <motion.div
-        initial={{ opacity: 1, scale: 1 }}
-        whileInView={{ opacity: 0, scale: 0 }}
-        transition={{ delay: 9, duration: 2, ease: "easeInOut" }}
-        style={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: "white",
-          position: "fixed",
-          zIndex: "1000",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Image
-          src="/9bc07b632c7ca8a2e20d011ab58aa3f7.gif"
-          alt="profile"
-          width={500}
-          height={500}
-        />
-      </motion.div>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default MainWrapper;

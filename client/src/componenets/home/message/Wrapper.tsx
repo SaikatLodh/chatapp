@@ -20,12 +20,10 @@ const Wrapper = () => {
         lg={6}
         height={"100%"}
         sx={{
-          display: { xs: "none", sm: "block" },
+          display: { sm: "block" },
           width: {
             xs: "100%",
-            sm: "100%",
-            md: "60%",
-            lg: `${data && data?.pages?.[0]?.length > 0 ? "60%" : "80%"}`,
+            sm: data && data?.pages?.[0]?.length > 0 ? "60%" : "80%",
           },
         }}
       >

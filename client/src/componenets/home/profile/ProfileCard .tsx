@@ -11,7 +11,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ text, Icon, heading }) => {
   return (
     <Stack
       direction={"row"}
-      alignItems={"center"}
       spacing={"1rem"}
       color={"white"}
       textAlign={"center"}

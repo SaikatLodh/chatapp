@@ -52,6 +52,7 @@ const AccountAdmin = () => {
           alignItems: "center",
           width: "100%",
           height: "100%",
+          my: { sm: "0rem", xs: "1rem" },
         }}
       >
         <Box

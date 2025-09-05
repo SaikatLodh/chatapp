@@ -35,17 +35,10 @@ class userController {
     }
   }
 
-  async updateuser(req, res) {
+  async updateuser(req, res) { 
     try {
       const userId = req.user.id;
       const { name, bio, username } = req.body;
-
-      const checkUsername = await User.findOne({ username: username });
-      if (checkUsername) {
-        return res
-          .status(400)
-          .json(new ApiError("Username already exists", 400));
-      }
 
       const file = req?.file?.path;
 

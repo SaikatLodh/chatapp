@@ -34,6 +34,7 @@ interface Column {
   width: number;
   renderCell?: (params: { row: TransformedUser }) => React.ReactNode;
   format?: (value: number) => string;
+  responsiveSx?: object;
 }
 
 const columns: Column[] = [
@@ -42,6 +43,7 @@ const columns: Column[] = [
     headerName: "ID",
     headerClassName: "table-header",
     width: 200,
+    responsiveSx: { display: { xs: "none", md: "table-cell" } },
   },
   {
     field: "avatar",
@@ -75,6 +77,7 @@ const columns: Column[] = [
     headerName: "Groups",
     headerClassName: "table-header",
     width: 200,
+    responsiveSx: { display: { xs: "none", md: "table-cell" } },
   },
 ];
 
@@ -115,7 +118,7 @@ const UserManagement: React.FC = () => {
       <Paper
         elevation={3}
         sx={{
-          padding: "1rem 4rem",
+          padding: { xs: "1rem", sm: "2rem" },
           borderRadius: "1rem",
           margin: "auto",
           width: "100%",
@@ -145,6 +148,7 @@ const UserManagement: React.FC = () => {
               sx={{
                 margin: "2rem",
                 textTransform: "uppercase",
+                fontSize: { xs: "1.5rem", sm: "2rem" },
               }}
             >
               User Management
@@ -161,6 +165,7 @@ const UserManagement: React.FC = () => {
                           backgroundColor: "black",
                           color: "white",
                           fontWeight: "bold",
+                          ...column.responsiveSx,
                         }}
                       >
                         {column.headerName}
@@ -177,7 +182,10 @@ const UserManagement: React.FC = () => {
                           const value = row[column.field];
 
                           return (
-                            <TableCell key={index}>
+                            <TableCell
+                              key={index}
+                              sx={{ ...column.responsiveSx }}
+                            >
                               {column.renderCell
                                 ? column.renderCell({ row })
                                 : column.format && typeof value === "number"
