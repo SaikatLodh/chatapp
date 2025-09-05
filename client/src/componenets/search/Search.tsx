@@ -6,6 +6,7 @@ import {
   List,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import UserItem from "./UserItem";
@@ -13,6 +14,7 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import { useSearchUser } from "@/hooks/react-query/react-hooks/user/userHook";
 import { useDebounce } from "use-debounce";
 import SkeletonLoader from "./SkeletonLoader";
+import PersonIcon from "@mui/icons-material/Person";
 const Search = ({
   open,
   handleClose,
@@ -57,7 +59,19 @@ const Search = ({
             ) : data && data.length > 0 ? (
               data.map((user) => <UserItem key={user._id} user={user} />)
             ) : (
-              <Box sx={{ textAlign: "center", mt: "20px" }}> No User Yet</Box>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  mt: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                {" "}
+                <PersonIcon /> <Typography>No User Yet</Typography>
+              </Box>
             )}
           </List>
         </Stack>

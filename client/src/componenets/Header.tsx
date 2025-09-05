@@ -138,12 +138,16 @@ const Header = () => {
                       <MenuIcon />
                     </IconButton>
                   ) : (
-                    <IconButton
-                      color="inherit"
-                      onClick={() => setBaeOpen(true)}
-                    >
-                      <MenuIcon />
-                    </IconButton>
+                    <>
+                      {!location.startsWith("/user") && (
+                        <IconButton
+                          color="inherit"
+                          onClick={() => setBaeOpen(true)}
+                        >
+                          <MenuIcon />
+                        </IconButton>
+                      )}
+                    </>
                   )}
                 </Box>
 

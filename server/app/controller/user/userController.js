@@ -35,7 +35,7 @@ class userController {
     }
   }
 
-  async updateuser(req, res) { 
+  async updateuser(req, res) {
     try {
       const userId = req.user.id;
       const { name, bio, username } = req.body;
@@ -238,6 +238,7 @@ class userController {
           { sender: senderId, receiver: receiverId },
           { sender: receiverId, receiver: senderId },
         ],
+        friend: true,
       });
 
       if (findrequest) {

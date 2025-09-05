@@ -99,14 +99,14 @@ const useSendFriendRequest = (receiverId: string) => {
 };
 
 const useAcceptFriendRequest = () => {
-  const { queryClient } = useGlobalHooks();
+  const { queryClient, dispatch } = useGlobalHooks();
 
   return useMutation({
     mutationFn: acceptFriendRequest,
     onSuccess: (data) => {
       if (data?.message) {
         toast.success(data?.message);
-
+        dispatch(getUser());
         queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
         queryClient.invalidateQueries({
           queryKey: [USER_NOTIFICATION_QUERY_KEY],

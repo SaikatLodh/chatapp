@@ -131,7 +131,13 @@ const Message = () => {
               typingUser={typingUser}
             />
             {isFriend ? (
-              ""
+              <Typography
+                variant="h6"
+                textAlign={"center"}
+                sx={{ fontSize: "0.8rem" }}
+              >
+                You are friends
+              </Typography>
             ) : (
               <Typography
                 variant="h6"
@@ -215,6 +221,7 @@ const Message = () => {
                 padding: "0.5rem",
                 borderRadius: "1.5rem",
                 backgroundColor: "rgba(247,247,247,1)",
+                pl: { xs: "1rem", sm: "1.5rem" },
               }}
               {...register("content", { required: true })}
               disabled={isFriend ? false : true}

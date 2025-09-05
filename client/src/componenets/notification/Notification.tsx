@@ -1,9 +1,9 @@
-import { Box, Dialog, DialogTitle, Stack } from "@mui/material";
+import { Box, Dialog, DialogTitle, Stack, Typography } from "@mui/material";
 import React from "react";
 import NotificationItem from "./NotificationItem";
 import { useMyFriendsRequest } from "@/hooks/react-query/react-hooks/user/userHook";
 import SkeletonLoader from "./SkeletonLoader";
-
+import NotificationsIcon from "@mui/icons-material/Notifications";
 const Notification = ({
   isNotification,
   closeNotificationHandler,
@@ -36,9 +36,17 @@ const Notification = ({
                   textAlign: "center",
                   fontSize: "1.2rem",
                   color: "text.secondary",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
                 }}
               >
-                No notifications available at the moment.
+                <NotificationsIcon />
+                <Typography>
+                  {" "}
+                  No notifications available at the moment.
+                </Typography>
               </Box>
             </>
           )}

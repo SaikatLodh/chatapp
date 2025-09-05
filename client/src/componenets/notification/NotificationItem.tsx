@@ -49,7 +49,7 @@ const NotificationItem = ({ data }: { data: FriendRequestNotification }) => {
 
           <Stack
             direction={{
-              xs: "column",
+              xs: "row",
               sm: "row",
             }}
           >

@@ -50,6 +50,19 @@ const MainWrapper = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     initRefreshToken();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      try {
+        dispatch(getUser());
+      } catch (err) {
+        console.error("Get user failed:", err);
+      }
+    }, 1000 * 60 * 2);
+
+    return () => clearInterval(interval);
+  }, [isAuthenticated, dispatch]);
+
   useEffect(() => {
     dispatch(refreshToken()).then((res) => {
       if (res.payload.status === 200) {

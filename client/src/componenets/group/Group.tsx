@@ -13,7 +13,7 @@ import { useGetmyFriends } from "@/hooks/react-query/react-hooks/user/userHook";
 import { useForm } from "react-hook-form";
 import { useCreateGroup } from "@/hooks/react-query/react-hooks/chat/chatHook";
 import SkeletonLoader from "./SkeletonLoader";
-
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 interface GroupProps {
   name: string;
 }
@@ -102,9 +102,22 @@ const Group = ({
                   />
                 ))
               ) : (
-                <Box sx={{ textAlign: "center", my: "2rem" }}>
-                  <Typography variant="body2" color="textSecondary">
-                    You have No friends
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    fontSize: "1.2rem",
+                    color: "text.secondary",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap:1,
+                    my: "1rem",
+                  }}
+                >
+                  <PeopleAltIcon />
+                  <Typography variant="body2" color="text.secondary">
+                    You have no friends yet
                   </Typography>
                 </Box>
               )}

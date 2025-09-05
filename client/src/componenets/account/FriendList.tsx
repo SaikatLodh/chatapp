@@ -5,7 +5,7 @@ import {
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import React from "react";
 import SkeletonLoader from "./SkeletonLoader";
-
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 const FriendList = () => {
   const { data, isLoading } = useGetmyFriends();
   const { mutate } = useRemovefriend();
@@ -44,9 +44,6 @@ const FriendList = () => {
               />
               <Box>
                 <Typography variant="body1">{friend.name}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Last message preview...
-                </Typography>
               </Box>
             </Box>
 
@@ -71,9 +68,17 @@ const FriendList = () => {
             textAlign: "center",
             fontSize: "1.2rem",
             color: "text.secondary",
+            height: "100%",
           }}
         >
-          You have no friends yet
+          <PeopleAltIcon sx={{ fontSize: "5rem" }} />
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontSize: "1.2rem" }}
+          >
+            You have no friends yet
+          </Typography>
         </Box>
       )}
     </>
