@@ -4,10 +4,10 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { getUser, googlesignin, resetLoading } from "@/store/auth/authSlice";
-import { useRouter } from "next/navigation";
+
 const SigninGoogle = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+
   const responseGoogle = async (authResult: {
     authuser?: string;
     code?: string;
@@ -20,7 +20,7 @@ const SigninGoogle = () => {
         dispatch(googlesignin(authResult.code))
           .then((res) => {
             if (res?.payload?.message) {
-              router.push("/");
+              window.location.href = "/";
               dispatch(getUser());
             }
           })

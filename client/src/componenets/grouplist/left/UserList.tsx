@@ -49,7 +49,7 @@ const UserList: React.FC = () => {
         >
           <AnnouncementIcon sx={{ fontSize: "3rem" }} />
           <Typography variant="h6" sx={{ fontSize: "1rem" }}>
-            No Chats Found
+            No Groups Found
           </Typography>
         </Box>
       )}

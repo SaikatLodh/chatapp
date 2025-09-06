@@ -1,14 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ChatList from "./home/chatlist/ChatList";
 import { usePathname } from "next/navigation";
 import UserList from "./grouplist/left/UserList";
@@ -21,9 +13,23 @@ const MobileMenu = ({
   setOpen: (value: boolean) => void;
 }) => {
   const pathname = usePathname();
+
+  React.useEffect(() => {
+    if (pathname.startsWith("/user/getgroups")) {
+      setOpen(true);
+    }
+    return () => {
+      setOpen(false);
+    };
+  }, [pathname, setOpen]);
   return (
     <>
-      <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ display: { sm: "none" } }}
+      >
         <Box sx={{ width: 280 }} role="presentation">
           {(pathname === "/" || pathname === "/user/getgroups") && (
             <>

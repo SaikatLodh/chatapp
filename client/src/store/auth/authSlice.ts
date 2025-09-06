@@ -144,6 +144,8 @@ export const logout = createAsyncThunk(
       );
       if (response.data?.message) {
         toast.success(`${response.data?.message}`);
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
         return response.data;
       }
       return rejectWithValue("No message in response");

@@ -139,7 +139,7 @@ const Header = () => {
                     </IconButton>
                   ) : (
                     <>
-                      {!location.startsWith("/user") && (
+                      {!location.startsWith("/user/account") && (
                         <IconButton
                           color="inherit"
                           onClick={() => setBaeOpen(true)}

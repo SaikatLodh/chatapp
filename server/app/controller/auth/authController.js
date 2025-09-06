@@ -37,18 +37,78 @@ class authController {
         return res.status(500).json(new ApiError("Failed to send otp", 500));
       }
 
+      const mailTemplate = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CHATT APP - Email Verification</title>
+  </head>
+  <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color:#f4f4f4;">
+    <table align="center" width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden;">
+      
+      <!-- Header -->
+      <tr>
+        <td style="background:#2563EB; color:#ffffff; padding:20px; text-align:center; font-size:22px; font-weight:bold;">
+          CHATT APP
+        </td>
+      </tr>
+
+      <!-- Content -->
+      <tr>
+        <td style="padding:30px; color:#333;">
+          <h2 style="margin-top:0;">Email Verification</h2>
+          <p>Hello ${createOtp.email},</p>
+          <p>
+            To complete your registration with <strong>CHATT APP</strong>, please use the OTP below to verify your email address:
+          </p>
+
+          <!-- OTP Code -->
+          <p style="text-align:center; margin:30px 0;">
+            <span style="display:inline-block; background:#2563EB; color:#ffffff; font-size:28px; font-weight:bold; letter-spacing:6px; padding:14px 28px; border-radius:8px;">
+             ${createOtp.otp}
+            </span>
+          </p>
+
+          <p>
+            This OTP will expire in <strong>2 minutes</strong>. Please do not share it with anyone for security reasons.
+          </p>
+
+          <p style="margin-top:20px; font-size:14px; color:#555;">
+            If you did not request this, please ignore this email or contact our support team.
+          </p>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background:#f9fafb; padding:20px; text-align:center; font-size:12px; color:#777;">
+          © 2025 CHATT APP. All rights reserved. <br />
+          This is an automated email, please do not reply.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;
+
       const mailOption = {
         email: createOtp.email,
         subject: "OTP for email verification",
-        message: `<h3>OTP for email verification is ${createOtp.otp}</h3>`,
+        message: mailTemplate,
       };
 
-      await sendEmail(mailOption);
-      createOtp.isotpsend = true;
-      await createOtp.save({ validateBeforeSave: false });
-      return res
-        .status(201)
-        .json(new ApiResponse(201, {}, "Otp sent successfully"));
+      try {
+        await sendEmail(mailOption);
+        createOtp.isotpsend = true;
+        await createOtp.save({ validateBeforeSave: false });
+        return res
+          .status(201)
+          .json(new ApiResponse(201, {}, "Otp sent successfully"));
+      } catch (error) {
+        createOtp.isotpsend = false;
+        await createOtp.save({ validateBeforeSave: false });
+        return res.status(500).json(new ApiError(error.message, 500));
+      }
     } catch (error) {
       return res.status(500).json(new ApiError(error.message, 500));
     }
@@ -222,18 +282,78 @@ class authController {
 
       const resetPasswordUrl = `${process.env.CLIENT_URL}/forgot-password/${generateToken}`;
 
-      const message = `Your Reset Password Token is:- \n\n ${resetPasswordUrl}  \n\n If 
-   You've not requested this email then, please ignore it.`;
+      const message = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CHATT APP - Reset Your Password</title>
+  </head>
+  <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color:#f4f4f4;">
+    <table align="center" width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden;">
+      
+      <!-- Header -->
+      <tr>
+        <td style="background:#2563EB; color:#ffffff; padding:20px; text-align:center; font-size:22px; font-weight:bold;">
+          CHATT APP
+        </td>
+      </tr>
 
-      await sendEmail({
-        email: checkEmail.email,
-        subject: "Chatapp Reset Password",
-        message: message,
-      });
+      <!-- Content -->
+      <tr>
+        <td style="padding:30px; color:#333;">
+          <h2 style="margin-top:0;">Reset Your Password</h2>
+          <p>Hello ${checkEmail.name},</p>
+          <p>
+            We received a request to reset your password for your <strong>CHATT APP</strong> account.  
+            If you made this request, click the button below to reset your password:
+          </p>
 
-      return res
-        .status(200)
-        .json(new ApiResponse(200, {}, "Email sent successfully"));
+          <!-- CTA Button -->
+          <p style="text-align:center; margin:30px 0;">
+            <a href="${resetPasswordUrl}" target="_blank" style="background:#2563EB; color:#ffffff; text-decoration:none; padding:14px 28px; border-radius:6px; font-weight:bold; font-size:16px;">
+              Reset Password
+            </a>
+          </p>
+
+          <p style="font-size:14px; color:#555;">
+            If the button doesn’t work, copy and paste this link into your browser:
+            <br />
+            <a href="${resetPasswordUrl}" style="color:#2563EB;">${resetPasswordUrl}</a>
+          </p>
+
+          <p style="margin-top:20px; font-size:14px; color:#555;">
+            This link will expire in <strong>15 minutes</strong>. If you did not request a password reset, please ignore this email or contact support immediately.
+          </p>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background:#f9fafb; padding:20px; text-align:center; font-size:12px; color:#777;">
+          © 2025 CHATT APP. All rights reserved. <br />
+          This is an automated email, please do not reply.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;
+
+      try {
+        await sendEmail({
+          email: checkEmail.email,
+          subject: "Chatapp Reset Password",
+          message: message,
+        });
+        return res
+          .status(200)
+          .json(new ApiResponse(200, {}, "Email sent successfully"));
+      } catch (error) {
+        checkEmail.resetPasswordToken = undefined;
+        checkEmail.resetPasswordExpire = undefined;
+        await checkEmail.save({ validateBeforeSave: false });
+        return res.status(500).json(new ApiError(error.message, 500));
+      }
     } catch (error) {
       return res.status(500).json(new ApiError(error.message, 500));
     }
