@@ -2,6 +2,10 @@
 
 A full-stack real-time chat application built with Next.js (client) and Node.js/Express (server). Features include user authentication, group chats, friend requests, real-time messaging, admin panel, and more.
 
+## Live Url
+
+https://chattapps.netlify.app/
+
 ## Features
 
 - **Real-time Messaging**: Instant messaging with Socket.io for real-time communication.
@@ -128,6 +132,11 @@ For detailed API documentation, refer to the server routes in `server/app/routes
 ## License
 
 This project is licensed under the ISC License - see the LICENSE file for details.
+
+## Admin Credentials
+
+email : owner@yopmail.com
+password: owner10
 
 ## Author
 
