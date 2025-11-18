@@ -1,0 +1,56 @@
+{
+  "swaggerDefinition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "ChatApp API",
+      "version": "1.0.0",
+      "description": "API documentation for the ChatApp backend",
+      "contact": {
+        "name": "Saikat Lodh"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5000",
+        "description": "Development server"
+      },
+      {
+        "url": "https://your-deployed-server-url.com",
+        "description": "Production server"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "tags": [
+      {
+        "name": "Auth restful API",
+        "description": "Auth API"
+      },
+      {
+        "name": "User restful API",
+        "description": "User API"
+      },
+      {
+        "name": "Chat restful API",
+        "description": "Chat API"
+      },
+      {
+        "name": "Admin restful API",
+        "description": "Admin API"
+      }
+    ]
+  },
+  "apis": ["./app/app.js", "./app/routes/*.js"]
+}

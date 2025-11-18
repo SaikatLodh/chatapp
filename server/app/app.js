@@ -6,7 +6,9 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const env = require("dotenv");
 const { userSocketIDs, onlineUsers, setIO } = require("./config/socketStore");
-
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swaggerOptions = require("../swagger.json");
 const app = express();
 const server = http.createServer(app);
 
@@ -47,6 +49,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("trust proxy", 1);
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Serve Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRouter");
